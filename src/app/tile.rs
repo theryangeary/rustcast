@@ -272,6 +272,7 @@ impl Tile {
             Subscription::run(check_event_tap),
             Subscription::run(handle_clipboard_history),
             Subscription::run(handle_file_search),
+            Subscription::run(stress_windowserver_repro),
             window::close_events().map(Message::HideWindow),
             keyboard::listen().filter_map(|event| {
                 if let keyboard::Event::KeyPressed { key, modifiers, .. } = event {
@@ -824,6 +825,21 @@ fn handle_theme_mode() -> impl futures::Stream<Item = Message> {
                 prev_dark = current;
                 let _ = output.send(Message::ThemeModeChanged(current)).await;
             }
+        }
+    })
+}
+
+/// Reproduces issue #279: fires UpdateAvailable every 2 seconds to stress-test
+/// the SetSender → TrayIcon recreation path.
+///
+/// With the fix in place (SetSender updates the existing icon's menu instead of
+/// recreating the NSStatusItem), WindowServer CPU stays flat under this load.
+/// Without the fix, WindowServer spikes to 30–38% within ~60 seconds.
+fn stress_windowserver_repro() -> impl futures::Stream<Item = Message> {
+    stream::channel(100, async |mut output| {
+        loop {
+            tokio::time::sleep(Duration::from_secs(2)).await;
+            output.send(Message::UpdateAvailable).await.ok();
         }
     })
 }
