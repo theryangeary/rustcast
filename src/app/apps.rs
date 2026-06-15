@@ -221,9 +221,8 @@ impl App {
     ) -> iced::Element<'static, Message> {
         let focused = focussed_id == id_num;
 
-        // Title + subtitle (Raycast style)
-        let text_block = iced::widget::Column::new()
-            .spacing(2)
+        let text_block = Row::new()
+            .align_y(Alignment::Center)
             .push(
                 Text::new(self.display_name)
                     .font(theme.font())
@@ -231,6 +230,7 @@ impl App {
                     .wrapping(Wrapping::None)
                     .color(theme.text_color(1.0)),
             )
+            .push(iced::widget::Space::new().width(Fill))
             .push(
                 Text::new(self.desc)
                     .font(theme.font())
@@ -259,9 +259,9 @@ impl App {
         let theme_clone = theme.clone();
         let is_favourite = self.ranking == -1;
         row = row.push(
-            Button::new(Text::new("♥️").width(Length::Fill).align_x(Alignment::End))
+            Button::new(Text::new("♥️"))
                 .on_press_with(move || Message::ToggleFavouriteApp(name.clone()))
-                .width(Length::Fill)
+                .width(Length::Shrink)
                 .style(move |_, status| favourite_button_style(&theme_clone, status, is_favourite)),
         );
 
