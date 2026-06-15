@@ -17,7 +17,7 @@ pub mod tile;
 
 use iced::window::{self, Id, Settings};
 /// The default window width
-pub const WINDOW_WIDTH: f32 = 500.;
+pub const WINDOW_WIDTH: f32 = 750.;
 
 /// The default window height
 pub const DEFAULT_WINDOW_HEIGHT: f32 = 100.;
