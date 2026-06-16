@@ -615,6 +615,10 @@ pub fn handle_update(tile: &mut Tile, message: Message) -> Task<Message> {
                     tile.query.pop();
                     tile.query_lc.pop();
                 }
+                Move::ClearAll => {
+                    tile.query.clear();
+                    tile.query_lc.clear();
+                }
             }
 
             let updated_query = tile.query.clone();

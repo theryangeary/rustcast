@@ -115,6 +115,7 @@ pub enum ArrowKey {
 pub enum Move {
     Back,
     Forwards(String),
+    ClearAll,
 }
 
 #[derive(Debug, Clone)]

@@ -301,6 +301,8 @@ impl Tile {
                                 Some(Message::ChangeFocus(ArrowKey::Up, 1))
                             } else if s == "n" && modifiers.control() {
                                 Some(Message::ChangeFocus(ArrowKey::Down, 1))
+                            } else if s == "u" && modifiers.control() {
+                                Some(Message::FocusTextInput(Move::ClearAll))
                             } else {
                                 Some(Message::FocusTextInput(Move::Forwards(s)))
                             }
